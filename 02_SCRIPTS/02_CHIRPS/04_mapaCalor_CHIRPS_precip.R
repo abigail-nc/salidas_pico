@@ -1,5 +1,5 @@
 # --- R
-# Script para crear mapa de calor de disponibiliad de datos del SMN para cada estación y cada día
+# Script para crear mapa de calor de disponibiliad de datos del CHIRPS para cada estación y cada día
 # DALM
 # Última modificación: 26 de octibre de 2026
 
@@ -11,8 +11,8 @@ library(readr)
 library(tidyr)
 
 
-precip <- read.csv(paste0(inpath, "02_CHIRPS_BD_precip.csv"))
-precip$FECHA <- as.Date(precip$date)
+precip <- read.csv2(paste0(inpath, "02_CHIRPS_BD_precip.csv"))
+precip$date <- as.Date(precip$date)
 
 #armado de precipitacion
 precip_long <- precip %>%
@@ -29,10 +29,10 @@ precip_long <- precip %>%
 ggplot(precip_long, aes(x = date, y = Estacion, fill = Estado)) +
   geom_tile() +
   scale_fill_manual(
-    values = c("Disponible" = "#39586d", "Faltante" = "#d2d7db")
+    values = c("Disponible" = "#00568f", "Faltante" = "#ff7300")
   ) +
   labs(
-    title = "Disponibilidad de datos de Precipitación (SMN)",
+    title = "Disponibilidad de datos de Precipitación (CHIRPS)",
     x = "Fecha",
     y = "Estación",
     fill = "Estado"
@@ -43,5 +43,4 @@ ggplot(precip_long, aes(x = date, y = Estacion, fill = Estado)) +
     panel.grid = element_blank()   
   )
 
-  ggsave(paste0(inpath, "1_MapaCalor_dispo_SMN_precip.png"), get_last_plot(), width = 8, height = 11, units = "in", dpi = 300)
-
+  ggsave(paste0(inpath, "1_MapaCalor_dispo_CHIRPS_precip.png"), get_last_plot(), width = 8, height = 11, units = "in", dpi = 300)
